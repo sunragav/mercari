@@ -1,12 +1,12 @@
-package com.mercari.sundararaghavan.myapplication.application;
+package com.mercari.sundararaghavan.myapplication.application.di;
 
 import android.app.Application;
-import android.content.Context;
 
-import com.mercari.sundararaghavan.myapplication.home.ActivityBuilder;
+import com.mercari.sundararaghavan.myapplication.application.MercariApplication;
+import com.mercari.sundararaghavan.myapplication.home.di.ActivityBuilder;
 import com.mercari.sundararaghavan.myapplication.home.MainActivity;
-import com.mercari.sundararaghavan.myapplication.networking.NetworkModule;
-import com.mercari.sundararaghavan.myapplication.products.view.FragmentBuilder;
+import com.mercari.sundararaghavan.myapplication.networking.di.NetworkModule;
+import com.mercari.sundararaghavan.myapplication.products.di.FragmentBuilder;
 import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
 import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelModule;
 
@@ -14,7 +14,6 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
 
 @Singleton
 @Component(modules = {

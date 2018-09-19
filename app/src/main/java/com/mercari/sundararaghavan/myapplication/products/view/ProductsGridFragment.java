@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mercari.sundararaghavan.myapplication.R;
-import com.mercari.sundararaghavan.myapplication.application.MercariApplication;
-import com.mercari.sundararaghavan.myapplication.application.MercariApplicationComponent;
-import com.mercari.sundararaghavan.myapplication.products.model.Repo;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
 import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelFactory;
 
@@ -26,8 +22,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ProductsGridFragment extends Fragment {

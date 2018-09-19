@@ -1,4 +1,4 @@
-package com.mercari.sundararaghavan.myapplication.products.view;
+package com.mercari.sundararaghavan.myapplication.products.di;
 
 import android.support.v4.app.Fragment;
 

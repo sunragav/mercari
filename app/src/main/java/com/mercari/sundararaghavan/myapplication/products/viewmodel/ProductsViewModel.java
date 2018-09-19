@@ -1,6 +1,7 @@
 package com.mercari.sundararaghavan.myapplication.products.viewmodel;
 
 import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -26,7 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ProductsViewModel extends ViewModel {
+public class ProductsViewModel extends AndroidViewModel {
 
     private final RepoService repoService;
 
@@ -48,9 +49,11 @@ public class ProductsViewModel extends ViewModel {
 
 
     @Inject
-    public ProductsViewModel(RepoService repoService) {
+    public ProductsViewModel(RepoService repoService,Application application) {
+        super(application);
         this.repoService = repoService;
-        String[] titles = {"Men","All","Woman"};
+       // String[] titles = {"Men","All","Woman"};
+        String [] titles = application.getResources().getStringArray(R.array.categories);
         for(int i=0;i<titles.length;i++){
             liveDataMap.put(titles[i],new LiveModel());
         }

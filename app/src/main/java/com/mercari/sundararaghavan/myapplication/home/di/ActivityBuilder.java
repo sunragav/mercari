@@ -1,6 +1,8 @@
-package com.mercari.sundararaghavan.myapplication.home;
+package com.mercari.sundararaghavan.myapplication.home.di;
 
 import android.app.Activity;
+
+import com.mercari.sundararaghavan.myapplication.home.MainActivity;
 
 import dagger.Binds;
 import dagger.Module;

@@ -1,4 +1,6 @@
-package com.mercari.sundararaghavan.myapplication.home;
+package com.mercari.sundararaghavan.myapplication.home.di;
+
+import com.mercari.sundararaghavan.myapplication.home.MainActivity;
 
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;

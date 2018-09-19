@@ -5,6 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import com.mercari.sundararaghavan.myapplication.application.di.DaggerMercariApplicationComponent;
+import com.mercari.sundararaghavan.myapplication.application.di.MercariApplicationComponent;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;

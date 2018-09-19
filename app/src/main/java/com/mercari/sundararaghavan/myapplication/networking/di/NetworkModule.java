@@ -1,5 +1,6 @@
-package com.mercari.sundararaghavan.myapplication.networking;
+package com.mercari.sundararaghavan.myapplication.networking.di;
 
+import com.mercari.sundararaghavan.myapplication.networking.RepoService;
 import com.mercari.sundararaghavan.myapplication.products.model.AdapterFactory;
 import com.squareup.moshi.Moshi;
 

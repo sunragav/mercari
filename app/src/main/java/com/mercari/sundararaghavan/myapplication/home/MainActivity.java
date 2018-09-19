@@ -1,35 +1,28 @@
 package com.mercari.sundararaghavan.myapplication.home;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Resources;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mercari.sundararaghavan.myapplication.R;
 import com.mercari.sundararaghavan.myapplication.products.model.MasterRepo;
-import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
 import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
-import dagger.android.FragmentKey;
 
 public class MainActivity extends AppCompatActivity {
     private static final String MASTER_URL = "https://s3-ap-northeast-1.amazonaws.com/m-et/Android/json/master.json";
@@ -46,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.frame_layout)
     FrameLayout mainFrameLayout;
 
+    @BindView(R.id.toolbar)
+    Toolbar actionBar;
+
     @Inject
     ViewModelFactory viewModelFactory;
 
@@ -58,14 +54,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        setSupportActionBar(actionBar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_USE_LOGO);
+        getSupportActionBar().setIcon(R.mipmap.ic2_launcher);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Resources res = getResources();
         String[] titles = res.getStringArray(R.array.categories);
         customPagerAdapter = new CustomPagerAdapter(titles, getSupportFragmentManager());
-        ButterKnife.bind(this);
-
-
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
         observeViewModel();
         viewModel.fetchMasterRepos(MASTER_URL);

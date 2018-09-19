@@ -17,8 +17,11 @@ import com.mercari.sundararaghavan.myapplication.R;
 import com.mercari.sundararaghavan.myapplication.products.model.Repo;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,17 +91,23 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoVi
             ButterKnife.bind(this, itemView);
             drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_image_24dp);
             options = new RequestOptions();
-            options.centerCrop();
+            options.fitCenter();
             options.placeholder(drawable);
 
         }
+        public static String getStringWithSeparator(Long value) {
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+            String f = formatter.format(value);
+            return f;
+        }
+
 
         void bind(Repo repo) {
             this.repo = repo;
             prodNameTextView.setText(repo.name());
             likesTextView.setText(String.valueOf(repo.num_likes()));
             commentsTextView.setText(String.valueOf(repo.num_comments()));
-            priceTextView.setText(String.valueOf(repo.price()));
+            priceTextView.setText("$ "+getStringWithSeparator(repo.price()));
             if(repo.status().trim().equals("sold_out")) {
                 soldOutImage.setVisibility(View.VISIBLE);
             }
