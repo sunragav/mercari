@@ -16,18 +16,9 @@ import java.util.Map;
 class CustomPagerAdapter extends FragmentPagerAdapter {
     List<ProductsGridFragment> fragments = new ArrayList<>();
 
-    public Map<String, ProductsGridFragment> getFragmentMap() {
-        return fragmentMap;
-    }
 
-    Map<String,ProductsGridFragment> fragmentMap = new HashMap<>();
-    public CustomPagerAdapter(String categories[], FragmentManager fm) {
+    public CustomPagerAdapter(FragmentManager fm) {
         super(fm);
-        for(int i=0;i<3;i++){
-            fragments.add(new ProductsGridFragment());
-            fragments.get(i).setCategory(categories[i]);
-            fragmentMap.put(categories[i],fragments.get(i));
-        }
     }
 
     @Override
@@ -45,9 +36,12 @@ class CustomPagerAdapter extends FragmentPagerAdapter {
         return fragments.get(position).getCategory();
     }
 
-    public void clear(){
+    public void clear() {
         fragments.clear();
-        notifyDataSetChanged();
+    }
+
+    public void add(ProductsGridFragment fragment) {
+        fragments.add(fragment);
     }
 
 }

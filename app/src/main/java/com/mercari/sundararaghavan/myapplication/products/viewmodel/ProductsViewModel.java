@@ -25,9 +25,10 @@ import javax.inject.Named;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 
-public class ProductsViewModel extends AndroidViewModel {
+public class ProductsViewModel extends ViewModel {
 
     private final RepoService repoService;
 
@@ -49,14 +50,8 @@ public class ProductsViewModel extends AndroidViewModel {
 
 
     @Inject
-    public ProductsViewModel(RepoService repoService,Application application) {
-        super(application);
+    public ProductsViewModel(RepoService repoService) {
         this.repoService = repoService;
-       // String[] titles = {"Men","All","Woman"};
-        String [] titles = application.getResources().getStringArray(R.array.categories);
-        for(int i=0;i<titles.length;i++){
-            liveDataMap.put(titles[i],new LiveModel());
-        }
     }
 
 
@@ -83,11 +78,11 @@ public class ProductsViewModel extends AndroidViewModel {
     }
 
     public void fetchChildRepos(String category, String url) {
-        /*if ((!liveDataMap.containsKey(category) ||
-               (!liveDataMap.get(category).loading.getValue() && liveDataMap.get(category).repos == null))) {
-               */
+        if ((!liveDataMap.containsKey(category) ||
+                (!liveDataMap.get(category).loading.getValue() && liveDataMap.get(category).repos == null))) {
+
             fetchRepos(category, url);
-      //  }
+        }
 
         //To modify this logic to fetchChildRepos from room db instead of in-memory map
 
@@ -118,7 +113,8 @@ public class ProductsViewModel extends AndroidViewModel {
     }
 
     private void fetchRepos(String category, String url) {
-        LiveModel liveModel = liveDataMap.get(category);
+        LiveModel liveModel = new LiveModel();
+        liveDataMap.put(category,liveModel);
         liveModel.loading.setValue(true);
         repoCall = repoService.getRepositories(url);
         repoCall.enqueue(new Callback<List<Repo>>() {
@@ -126,6 +122,7 @@ public class ProductsViewModel extends AndroidViewModel {
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 liveModel.repoLoadError.setValue(false);
                 liveModel.repos.setValue(response.body());
+                Timber.d("ProductsViewModel","API call succeded for category:"+category);
                 liveModel.loading.setValue(false);
                 liveDataMap.put(category, liveModel);
                 repoCall = null;

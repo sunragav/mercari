@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,24 +7,80 @@
     android:orientation="vertical"
     tools:context=".home.MainActivity">
 
-    <include layout="@layout/toolbar"></include>
-
-    <include layout="@layout/products_fragment_layout"></include>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablelayout"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTabBG"
-        app:tabGravity="fill"
-        app:tabTextColor="@color/colorTabText"
-        app:tabIndicatorColor="@color/colorTabText"
-        app:tabMode="fixed" />
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <include layout="@layout/toolbar"></include>
+
+
+        <include layout="@layout/products_fragment_layout"></include>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTabBG"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorTabText"
+            app:tabMode="fixed"
+            app:tabTextColor="@color/colorTabText" />
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right|end"
+        android:layout_margin="2dp">
 
 
-</LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_add_func"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_exhibit"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:clickable="true"
+            android:elevation="0dp"
+            android:focusable="true"
+            app:elevation="0dp"
+            app:fabCustomSize="100dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="7dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sell_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="1dp"
+                android:padding="0dp"
+                android:text="Sell"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                app:srcCompat="@drawable/ic_camera" />
+
+        </LinearLayout>
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.mercari.sundararaghavan.myapplication.R;
 import com.mercari.sundararaghavan.myapplication.products.model.MasterRepo;
+import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
 import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelFactory;
 
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     ViewModelFactory viewModelFactory;
 
 
-
     private CustomPagerAdapter customPagerAdapter;
     private ProductsViewModel viewModel;
 
@@ -57,13 +57,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(actionBar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
-                ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_USE_LOGO);
         getSupportActionBar().setIcon(R.mipmap.ic2_launcher);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        Resources res = getResources();
-        String[] titles = res.getStringArray(R.array.categories);
-        customPagerAdapter = new CustomPagerAdapter(titles, getSupportFragmentManager());
+
+        customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
         observeViewModel();
         viewModel.fetchMasterRepos(MASTER_URL);
@@ -78,8 +74,12 @@ public class MainActivity extends AppCompatActivity {
             if (repos != null) {
                 mainFrameLayout.setVisibility(View.GONE);
                 tabLayout.setVisibility(View.VISIBLE);
+
                 for (MasterRepo repo : repos) {
-                    customPagerAdapter.getFragmentMap().get(repo.name()).setUrl(repo.data());
+                    ProductsGridFragment productsGridFragment = new ProductsGridFragment();
+                    productsGridFragment.setUrl(repo.data());
+                    productsGridFragment.setCategory(repo.name());
+                    customPagerAdapter.add(productsGridFragment);
                 }
                 viewPager.setAdapter(customPagerAdapter);
                 //String key ="Men";
@@ -106,5 +106,11 @@ public class MainActivity extends AppCompatActivity {
                 listView.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        customPagerAdapter.clear();
+        super.onDestroy();
     }
 }
