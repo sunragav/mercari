@@ -141,7 +141,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         getSupportActionBar().setIcon(R.mipmap.ic2_launcher);
 
         customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
-        viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
+       ** viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class); **
         
 ```
 
@@ -204,6 +204,23 @@ This is handled in the following code snippet:
                 repoCall = null;
             }
         });
+    }
+```
+This fetchRepos method is called from the fragement that tries to load the repos in the recyclerview.
+```java
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductsViewModel.class);  
+        boolean alreadyDownloaded = viewModel.fetchChildRepos(category, url);
+        RepoListAdapter repoListAdapter = new RepoListAdapter(viewModel, category, this);
+        listView.setAdapter(repoListAdapter);
+        if (alreadyDownloaded) {
+            repoListAdapter.setRepo(viewModel.getRepos(category).getValue());
+        }
+        listView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
+        listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        observeViewModel(category);
     }
 ```
 
