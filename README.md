@@ -177,6 +177,7 @@ public interface ProductsGridFragmentComponent extends AndroidInjector<ProductsG
 ## Architecture
 ![App architecture diagram](./doc-img/architecture.JPG)
 The android architecture component's viewmodel survive's configuration changes like device orientation etc.
+TODO: Add Room DB to the local persistence instead of the in-memory hashmap.
 The LiveData has been used to intimate the various states the service call go through like loading starts, response arrives or error occurs. On both, success as well failure the loading is propmptly stopped and error is intimated via the text field in a graceful way without exiting the app.
 This is handled in the following code snippet:
  ```java
