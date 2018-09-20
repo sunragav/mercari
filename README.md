@@ -39,7 +39,7 @@ public abstract class NetworkModule {
     }
 }
 ```
-### AcitivityBuilder Module uses the Dagger2 multibinding to bind the factory of the MainActivity for the key of MainActivity.class.
+### AcitivityBuilder Module uses the Dagger2 multibinding to bind the factory of the MainActivity with the MainActivity.class as a key.
 ```java
 @Module
 public abstract class ActivityBuilder {
