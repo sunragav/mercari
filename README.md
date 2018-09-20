@@ -15,9 +15,12 @@ The apps dependencies are satisfied using the Dagger2.0 library.
 ## Screenshots
 <img src="./doc-img/device.png" width="400">
 
-## CI/CD using nevercode.io (No configuration script required).
+## CI/CD using nevercode.io and HockeyApp (No configuration script required).
 ![nevercode.io 1](./doc-img/nevercode1.JPG)
 ![nevercode.io 2](./doc-img/nevercode2.JPG)
 ![nevercode.io 3](./doc-img/nevercode3.JPG)
 ![nevercode.io 4](./doc-img/nevercode4.JPG)
 ![nevercode.io 5](./doc-img/nevercode5.JPG)
+![nevercode.io 6](./doc-img/nevercode-pub.JPG)
+## HockeyApp Distribution (automatically distributed from nevercode.io)
+![hockeyapp distribution](./doc-img/hockey.JPG)
