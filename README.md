@@ -172,7 +172,7 @@ public interface ProductsGridFragmentComponent extends AndroidInjector<ProductsG
     }
 }
 ```
-
+TODO: Add more local scopes. Right now, all dependecies are having application level Singleton scopes.
 
 ## Architecture
 ![App architecture diagram](./doc-img/architecture.JPG)
@@ -331,8 +331,9 @@ Based on the response the recycler view is updated.
         diffResult.dispatchUpdatesTo(this);
     }
 ```
-
-
+## UI
+Constraint layout has been used to design the cardview as it uses a flatter layout hierarchy and will perform better than other nested layouts.
+<img src="./doc-img/Constraint.JPG" width="640">
 ## Screenshots
 <img src="./doc-img/device.png" width="400">
 
