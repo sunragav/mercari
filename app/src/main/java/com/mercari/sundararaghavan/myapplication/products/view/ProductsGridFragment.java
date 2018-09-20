@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mercari.sundararaghavan.myapplication.R;
+import com.mercari.sundararaghavan.myapplication.products.model.Repo;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
 import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelFactory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -38,6 +41,7 @@ public class ProductsGridFragment extends Fragment {
 
     private Unbinder unbinder;
     private ProductsViewModel viewModel;
+    private List<Repo> repo;
 
     public String getCategory() {
         return category;
@@ -55,8 +59,6 @@ public class ProductsGridFragment extends Fragment {
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
-//        MercariApplication.getApplicationComponent(context).inject(this);
-
     }
 
     @Nullable
@@ -64,15 +66,21 @@ public class ProductsGridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.products_fragment_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
+        setRetainInstance(true);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductsViewModel.class);
-        viewModel.fetchChildRepos(category, url);
+
+        RepoListAdapter repoListAdapter = new RepoListAdapter(viewModel, category, this);
+        listView.setAdapter(repoListAdapter);
+        if (viewModel.fetchChildRepos(category, url)) {
+            repoListAdapter.setRepo(viewModel.getRepos(category).getValue());
+        }
         listView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        listView.setAdapter(new RepoListAdapter(viewModel, category, this));
+
         listView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         observeViewModel(category);
     }

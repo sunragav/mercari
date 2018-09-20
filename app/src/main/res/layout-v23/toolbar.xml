@@ -7,6 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
-    android:titleTextColor="@color/colorAccent"
+    android:titleTextColor="@android:color/white"
     app:layout_collapseMode="pin"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />

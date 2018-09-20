@@ -3,8 +3,8 @@ package com.mercari.sundararaghavan.myapplication.application.di;
 import android.app.Application;
 
 import com.mercari.sundararaghavan.myapplication.application.MercariApplication;
-import com.mercari.sundararaghavan.myapplication.home.di.ActivityBuilder;
 import com.mercari.sundararaghavan.myapplication.home.MainActivity;
+import com.mercari.sundararaghavan.myapplication.home.di.ActivityBuilder;
 import com.mercari.sundararaghavan.myapplication.networking.di.NetworkModule;
 import com.mercari.sundararaghavan.myapplication.products.di.FragmentBuilder;
 import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
@@ -28,7 +28,6 @@ public interface MercariApplicationComponent {
     interface Builder {
         @BindsInstance
         Builder application(Application application);
-
         MercariApplicationComponent build();
     }
 

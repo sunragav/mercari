@@ -1,26 +1,18 @@
 package com.mercari.sundararaghavan.myapplication.products.viewmodel;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 
-import com.mercari.sundararaghavan.myapplication.R;
-import com.mercari.sundararaghavan.myapplication.application.MercariApplication;
 import com.mercari.sundararaghavan.myapplication.networking.RepoService;
 import com.mercari.sundararaghavan.myapplication.products.model.MasterRepo;
 import com.mercari.sundararaghavan.myapplication.products.model.Repo;
-import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
 
 import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +24,6 @@ public class ProductsViewModel extends ViewModel {
 
     private final RepoService repoService;
 
-    private MasterRepo masterRepo;
     private final MutableLiveData<List<MasterRepo>> repos = new MutableLiveData<>();
     private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
@@ -77,15 +68,14 @@ public class ProductsViewModel extends ViewModel {
         });
     }
 
-    public void fetchChildRepos(String category, String url) {
-        if ((!liveDataMap.containsKey(category) ||
-                (!liveDataMap.get(category).loading.getValue() && liveDataMap.get(category).repos == null))) {
-
+    public boolean fetchChildRepos(String category, String url) {
+        if (!liveDataMap.containsKey(category)) {
+            Timber.i("Network call for fetching the repo for category:" + category);
             fetchRepos(category, url);
+            return false;
         }
-
+        return true;
         //To modify this logic to fetchChildRepos from room db instead of in-memory map
-
     }
 
     public LiveData<List<Repo>> getRepos(String category) {
@@ -113,8 +103,8 @@ public class ProductsViewModel extends ViewModel {
     }
 
     private void fetchRepos(String category, String url) {
+        Timber.d("ProductsViewModel", "fetchRepos API called for category:" + category);
         LiveModel liveModel = new LiveModel();
-        liveDataMap.put(category,liveModel);
         liveModel.loading.setValue(true);
         repoCall = repoService.getRepositories(url);
         repoCall.enqueue(new Callback<List<Repo>>() {
@@ -122,7 +112,7 @@ public class ProductsViewModel extends ViewModel {
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 liveModel.repoLoadError.setValue(false);
                 liveModel.repos.setValue(response.body());
-                Timber.d("ProductsViewModel","API call succeded for category:"+category);
+                Timber.d("ProductsViewModel", "API call succeded for category:" + category);
                 liveModel.loading.setValue(false);
                 liveDataMap.put(category, liveModel);
                 repoCall = null;

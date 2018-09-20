@@ -1,11 +1,9 @@
 package com.mercari.sundararaghavan.myapplication.home;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +16,8 @@ import com.mercari.sundararaghavan.myapplication.products.model.MasterRepo;
 import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
 import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelFactory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -51,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     private ProductsViewModel viewModel;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
@@ -61,30 +66,36 @@ public class MainActivity extends AppCompatActivity {
 
         customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
-        observeViewModel();
-        viewModel.fetchMasterRepos(MASTER_URL);
+
+        if (savedInstanceState == null) {
+            observeViewModel();
+            viewModel.fetchMasterRepos(MASTER_URL);
+        } else {
+            viewPager.setAdapter(customPagerAdapter);
+        }
 
         listView.setVisibility(View.GONE);
         tabLayout.setVisibility(View.GONE);
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    public void initAdapter(List<MasterRepo> masterRepos) {
+        for (MasterRepo repo : masterRepos) {
+            ProductsGridFragment productsGridFragment = new ProductsGridFragment();
+            productsGridFragment.setUrl(repo.data());
+            productsGridFragment.setCategory(repo.name());
+            customPagerAdapter.add(productsGridFragment);
+        }
+        viewPager.setAdapter(customPagerAdapter);
+    }
+
+
     private void observeViewModel() {
         viewModel.getMasterRepos().observe(this, repos -> {
             if (repos != null) {
                 mainFrameLayout.setVisibility(View.GONE);
                 tabLayout.setVisibility(View.VISIBLE);
-
-                for (MasterRepo repo : repos) {
-                    ProductsGridFragment productsGridFragment = new ProductsGridFragment();
-                    productsGridFragment.setUrl(repo.data());
-                    productsGridFragment.setCategory(repo.name());
-                    customPagerAdapter.add(productsGridFragment);
-                }
-                viewPager.setAdapter(customPagerAdapter);
-                //String key ="Men";
-                //viewModel.fetchChildRepos(key,customPagerAdapter.getFragmentMap().get(key).getUrl());
-                //customPagerAdapter.notifyDataSetChanged();
+                initAdapter(repos);
             }
         });
         viewModel.getMasterRepoError().observe(this, isError -> {
@@ -106,11 +117,5 @@ public class MainActivity extends AppCompatActivity {
                 listView.setVisibility(View.GONE);
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        customPagerAdapter.clear();
-        super.onDestroy();
     }
 }

@@ -2,11 +2,5 @@
     <string name="app_name">Mercari</string>
     <string name="sold_out">sold out!!</string>
     <string name="product">product</string>
-    <string name="prod_name">Test</string>
     <string name="api_error_repos">Error calling API</string>
-    <string-array name="categories">
-        <item>Men</item>
-        <item>All</item>
-        <item>Woman</item>
-    </string-array>
 </resources>

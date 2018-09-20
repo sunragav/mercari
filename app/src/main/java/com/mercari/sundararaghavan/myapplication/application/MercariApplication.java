@@ -2,11 +2,10 @@ package com.mercari.sundararaghavan.myapplication.application;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import com.mercari.sundararaghavan.myapplication.BuildConfig;
 import com.mercari.sundararaghavan.myapplication.application.di.DaggerMercariApplicationComponent;
-import com.mercari.sundararaghavan.myapplication.application.di.MercariApplicationComponent;
 
 import javax.inject.Inject;
 
@@ -14,11 +13,9 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import timber.log.BuildConfig;
 import timber.log.Timber;
 
 public class MercariApplication extends Application implements HasActivityInjector, HasSupportFragmentInjector {
-    private MercariApplicationComponent component;
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
     @Inject
@@ -28,21 +25,13 @@ public class MercariApplication extends Application implements HasActivityInject
     @Override
     public void onCreate() {
         super.onCreate();
-      DaggerMercariApplicationComponent.builder()
+        DaggerMercariApplicationComponent.builder()
                 .application(this)
                 .build()
                 .inject(this);
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG_MODE) {
             Timber.plant(new Timber.DebugTree());
         }
-    }
-
-    public static MercariApplicationComponent getApplicationComponent(Context context) {
-        return ((MercariApplication) context.getApplicationContext()).component;
-    }
-
-    public MercariApplicationComponent getComponent() {
-        return component;
     }
 
     @Override

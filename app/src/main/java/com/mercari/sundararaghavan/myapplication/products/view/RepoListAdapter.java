@@ -29,18 +29,11 @@ import butterknife.ButterKnife;
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoViewHolder> {
 
     private final List<Repo> data = new ArrayList<>();
+    private List<Repo> repo;
 
     RepoListAdapter(ProductsViewModel viewModel, String category, LifecycleOwner lifecycleOwner) {
         viewModel.getRepos(category).observe(lifecycleOwner, repos -> {
-            if(repos==null){
-                data.clear();
-                notifyDataSetChanged();
-                return;
-            }
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new RepoDiffCallback(data, repos));
-            data.clear();
-            data.addAll(repos);
-            diffResult.dispatchUpdatesTo(this);
+            setRepo(repos);
         });
         setHasStableIds(true);
     }
@@ -64,6 +57,18 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoVi
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public void setRepo(List<Repo> repos) {
+        if (repos == null) {
+            data.clear();
+            notifyDataSetChanged();
+            return;
+        }
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new RepoDiffCallback(data, repos));
+        data.clear();
+        data.addAll(repos);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     static final class RepoViewHolder extends RecyclerView.ViewHolder {

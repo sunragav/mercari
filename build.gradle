@@ -32,7 +32,6 @@ ext {
     daggerVersion = '2.13'
     autoValueVersion = '1.5.1'
     autoValueMoshiVersion = '0.4.3'
-    conductorVersion = '2.1.4'
     timberVersion = '4.5.1'
     mockitoVersion = '2.10.0'
     glideVersion ='4.7.1'
