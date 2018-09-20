@@ -15,7 +15,7 @@ import com.mercari.sundararaghavan.myapplication.R;
 import com.mercari.sundararaghavan.myapplication.products.model.MasterRepo;
 import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
 import com.mercari.sundararaghavan.myapplication.products.viewmodel.ProductsViewModel;
-import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelFactory;
+import com.mercari.sundararaghavan.myapplication.viewmodel.di.ViewModelFactory;
 
 import java.util.List;
 

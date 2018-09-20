@@ -1,4 +1,4 @@
-package com.mercari.sundararaghavan.myapplication.viewmodel;
+package com.mercari.sundararaghavan.myapplication.viewmodel.di;
 
 
 import android.arch.lifecycle.ViewModel;

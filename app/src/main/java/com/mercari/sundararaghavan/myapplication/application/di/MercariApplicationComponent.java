@@ -8,7 +8,7 @@ import com.mercari.sundararaghavan.myapplication.home.di.ActivityBuilder;
 import com.mercari.sundararaghavan.myapplication.networking.di.NetworkModule;
 import com.mercari.sundararaghavan.myapplication.products.di.FragmentBuilder;
 import com.mercari.sundararaghavan.myapplication.products.view.ProductsGridFragment;
-import com.mercari.sundararaghavan.myapplication.viewmodel.ViewModelModule;
+import com.mercari.sundararaghavan.myapplication.viewmodel.di.ViewModelModule;
 
 import javax.inject.Singleton;
 
