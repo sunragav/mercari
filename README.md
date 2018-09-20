@@ -5,4 +5,5 @@ The app follows the (Model View ViewModel) MVVM architecture where the ViewModel
 
 The apps dependencies are satisfied using the Dagger2.0 library.
 
+# H2 The following the dependency diagram:
 ![Dagger2 dependency diagram](./doc-img/Dagger2.JPG)
