@@ -29,7 +29,6 @@ import butterknife.ButterKnife;
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoViewHolder> {
 
     private final List<Repo> data = new ArrayList<>();
-    private List<Repo> repo;
 
     RepoListAdapter(ProductsViewModel viewModel, String category, LifecycleOwner lifecycleOwner) {
         viewModel.getRepos(category).observe(lifecycleOwner, repos -> {

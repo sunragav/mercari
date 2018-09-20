@@ -53,7 +53,11 @@ public class ProductsViewModel extends ViewModel {
             @Override
             public void onResponse(Call<List<MasterRepo>> call, Response<List<MasterRepo>> response) {
                 repoLoadError.setValue(false);
-                repos.setValue(response.body());
+                List<MasterRepo> masterRepos = response.body();
+                MasterRepo temp = masterRepos.get(0);
+                masterRepos.set(0, masterRepos.get(1));
+                masterRepos.set(1, temp);
+                repos.setValue(masterRepos);
                 loading.setValue(false);
                 masterRepoCall = null;
             }
@@ -79,15 +83,24 @@ public class ProductsViewModel extends ViewModel {
     }
 
     public LiveData<List<Repo>> getRepos(String category) {
+        initLiveDataMap(category);
         return liveDataMap.get(category).repos;
     }
 
     public LiveData<Boolean> getError(String category) {
+        initLiveDataMap(category);
         return liveDataMap.get(category).repoLoadError;
     }
 
     public LiveData<Boolean> getLoading(String category) {
+        initLiveDataMap(category);
         return liveDataMap.get(category).loading;
+    }
+
+    public void initLiveDataMap(String category) {
+        if (liveDataMap.get(category) == null) {
+            liveDataMap.put(category, new LiveModel());
+        }
     }
 
     public LiveData<List<MasterRepo>> getMasterRepos() {
@@ -104,7 +117,8 @@ public class ProductsViewModel extends ViewModel {
 
     private void fetchRepos(String category, String url) {
         Timber.d("ProductsViewModel", "fetchRepos API called for category:" + category);
-        LiveModel liveModel = new LiveModel();
+        initLiveDataMap(category);
+        LiveModel liveModel = liveDataMap.get(category);
         liveModel.loading.setValue(true);
         repoCall = repoService.getRepositories(url);
         repoCall.enqueue(new Callback<List<Repo>>() {
@@ -114,7 +128,6 @@ public class ProductsViewModel extends ViewModel {
                 liveModel.repos.setValue(response.body());
                 Timber.d("ProductsViewModel", "API call succeded for category:" + category);
                 liveModel.loading.setValue(false);
-                liveDataMap.put(category, liveModel);
                 repoCall = null;
             }
 

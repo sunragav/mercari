@@ -73,10 +73,10 @@ public class ProductsGridFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductsViewModel.class);
-
+        boolean alreadyDownloaded = viewModel.fetchChildRepos(category, url);
         RepoListAdapter repoListAdapter = new RepoListAdapter(viewModel, category, this);
         listView.setAdapter(repoListAdapter);
-        if (viewModel.fetchChildRepos(category, url)) {
+        if (alreadyDownloaded) {
             repoListAdapter.setRepo(viewModel.getRepos(category).getValue());
         }
         listView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
