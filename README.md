@@ -175,6 +175,7 @@ public interface ProductsGridFragmentComponent extends AndroidInjector<ProductsG
 
 
 ## Architecture
+![App architecture diagram](./doc-img/architecture.JPG)
 The android architecture component's viewmodel survive's configuration changes like device orientation etc.
 The LiveData has been used to intimate the various states the service call go through like loading starts, response arrives or error occurs. On both, success as well failure the loading is propmptly stopped and error is intimated via the text field in a graceful way without exiting the app.
 This is handled in the following code snippet:
@@ -206,11 +207,94 @@ This is handled in the following code snippet:
         });
     }
 ```
-This fetchRepos method is called from the fragement that tries to load the repos in the recyclerview.
+### Models
+There are two types of models we have. The first one is to get the URLs to download the list of products for the respective categories.
+First one is called the MasterRepo which has download urls.
+```java
+public abstract class MasterRepo {
+    /**
+     * {
+     * "name": "All",
+     * "data": "https://s3-ap-northeast-1.amazonaws.com/m-et/Android/json/all.json"
+     * }
+     */
+    public abstract String name();
+
+    public abstract String data();
+
+    public static JsonAdapter<MasterRepo> jsonAdapter(Moshi moshi) {
+        return new AutoValue_MasterRepo.MoshiJsonAdapter(moshi);
+    }
+
+}
+
+```
+The second one is the model of the content of the respective download urls.
+```java
+public abstract class Repo {
+    /**
+     * {
+     * "id": "mmen1",
+     * "name": "men1",
+     * "status": "on_sale",
+     * "num_likes": 91,
+     * "num_comments": 59,
+     * "price": 51,
+     * "photo": "http://dummyimage.com/400x400/000/fff?text=men1"
+     * }
+     */
+    public abstract String id();
+
+    public abstract Long num_likes();
+
+    public abstract Long num_comments();
+
+    public abstract String status();
+
+    public abstract Long price();
+
+    public abstract String name();
+
+    public abstract String photo();
+
+    public static JsonAdapter<Repo> jsonAdapter(Moshi moshi) {
+        return new AutoValue_Repo.MoshiJsonAdapter(moshi);
+    }
+
+}
+
+```
+
+## Codeflow
+Intially the MainActivity requests the viewmodel to load the MasterRepo models.
+```java
+ viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
+
+        if (savedInstanceState == null) {
+            observeViewModel();
+            viewModel.fetchMasterRepos(MASTER_URL);
+        } else {
+            viewPager.setAdapter(customPagerAdapter);
+        }
+```
+
+On successful reponse we generate the fragments dynamically based on the contents of the response and add them to the FragmentPageAdapter.
+```java
+ public void initAdapter(List<MasterRepo> masterRepos) {
+        for (MasterRepo repo : masterRepos) {
+            ProductsGridFragment productsGridFragment = new ProductsGridFragment();
+            productsGridFragment.setUrl(repo.data());
+            productsGridFragment.setCategory(repo.name());
+            customPagerAdapter.add(productsGridFragment);
+        }
+        viewPager.setAdapter(customPagerAdapter);
+    }
+```
+Once we set the adapter to the viewpager, the fragments are created and in the createView lifecycle method we make the next API call to load the repo for the respective category using the fetchRepo call on the viewmodel object.
 ```java
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductsViewModel.class);  
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductsViewModel.class);
         boolean alreadyDownloaded = viewModel.fetchChildRepos(category, url);
         RepoListAdapter repoListAdapter = new RepoListAdapter(viewModel, category, this);
         listView.setAdapter(repoListAdapter);
@@ -223,8 +307,30 @@ This fetchRepos method is called from the fragement that tries to load the repos
         observeViewModel(category);
     }
 ```
+The recycler view adapter listens for the liveData event emitted by the viewmodel as shown in the fetchRepos code snippet earlier.
+Based on the response the recycler view is updated.
 
-![App architecture diagram](./doc-img/architecture.JPG)
+```java
+  RepoListAdapter(ProductsViewModel viewModel, String category, LifecycleOwner lifecycleOwner) {
+        viewModel.getRepos(category).observe(lifecycleOwner, repos -> {
+            setRepo(repos);
+        });
+        setHasStableIds(true);
+    }
+    
+    public void setRepo(List<Repo> repos) {
+        if (repos == null) {
+            data.clear();
+            notifyDataSetChanged();
+            return;
+        }
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new RepoDiffCallback(data, repos));
+        data.clear();
+        data.addAll(repos);
+        diffResult.dispatchUpdatesTo(this);
+    }
+```
+
 
 ## Screenshots
 <img src="./doc-img/device.png" width="400">
