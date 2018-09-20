@@ -24,6 +24,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    task copyDebugApk() {
+        project.copy {
+            from 'build/outputs/apk/debug'
+            into '..' // Into the app folder
+            rename('app-debug.apk',
+                    'Mercari-debug.apk')
+            include '**/*debug.apk'
+        }
+    }
 }
 
 
