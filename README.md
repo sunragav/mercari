@@ -342,6 +342,7 @@ Based on the response the recycler view is updated.
 ![nevercode.io 3](./doc-img/nevercode3.JPG)
 ![nevercode.io 4](./doc-img/nevercode4.JPG)
 ![nevercode.io 5](./doc-img/nevercode5.JPG)
+## Hockey publishing configuration in the nevercode.io using the API key of the HockeyApp.
 ![nevercode.io 6](./doc-img/nevercode-pub.JPG)
 ## HockeyApp Distribution (automatically distributed from nevercode.io)
 ![hockeyapp distribution](./doc-img/hockey.JPG)
