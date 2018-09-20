@@ -266,7 +266,7 @@ public abstract class Repo {
 
 ```
 
-## Codeflow
+### Codeflow
 Intially the MainActivity requests the viewmodel to load the MasterRepo models.
 ```java
  viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
@@ -336,7 +336,7 @@ Based on the response the recycler view is updated.
 ## Screenshots
 <img src="./doc-img/device.png" width="400">
 
-## CI/CD using nevercode.io and HockeyApp (No configuration script required).
+# CI/CD using nevercode.io and HockeyApp (No configuration script required).
 ![nevercode.io 1](./doc-img/nevercode1.JPG)
 ![nevercode.io 2](./doc-img/nevercode2.JPG)
 ![nevercode.io 3](./doc-img/nevercode3.JPG)
