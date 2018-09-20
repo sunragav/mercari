@@ -12,7 +12,7 @@ The apps dependencies are satisfied using the Dagger2.0 library.
 ![App architecture diagram](./doc-img/architecture.JPG)
 
 ## Screenshots
-![Screenshots](./doc-img/device.png)
+![Screenshots](./doc-img/device.png|width=100)
 
 ## CI/CD using nevercode.io (No configuration script required).
 ![nevercode.io 1](./doc-img/nevercode1.JPG)
