@@ -267,7 +267,7 @@ public abstract class Repo {
 ```
 
 ### Codeflow
-Intially the MainActivity requests the viewmodel to load the MasterRepo models.
+Initially the MainActivity requests the viewmodel to load the MasterRepo models.
 ```java
  viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(ProductsViewModel.class);
 
