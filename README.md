@@ -333,6 +333,7 @@ Based on the response the recycler view is updated.
 ```
 ## UI
 Constraint layout has been used to design the cardview as it uses a flatter layout hierarchy and will perform better than other nested layouts.
+<br>
 <img src="./doc-img/Constraint.JPG" width="640">
 ## Screenshots
 <img src="./doc-img/device.png" width="400">
