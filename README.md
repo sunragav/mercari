@@ -7,7 +7,7 @@ The app follows the (Model View ViewModel) MVVM architecture where the ViewModel
 The apps dependencies are satisfied using the Dagger2.0 library.
 
 ## The following is the dependency diagram:
-![Dagger2 dependency diagram](./doc-img/Dagger2.png)
+![Dagger2 dependency diagram](./doc-img/dagger2.png)
 The packaging structure has been maintained in such a way that all the logical pieces of the application has a package name and their dependency injection related files are placed in the "di" folder as shown in the image below.
 ![Dagger2 dependency package structure](./doc-img/di.JPG)
 ### NetWorkModule provides the retrofit(for the service calls) and the moshi adapter(for the JSON seraialization and deserializations)
